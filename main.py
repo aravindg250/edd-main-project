@@ -4,9 +4,9 @@ import numpy as np
 
 cascade_model = cv.CascadeClassifier('cars.xml')
 
-# Detects cars using Haar Cascade Classification returning positions of cars as rectangles
+# Detects cars using Haar Cascade Classification returning positions of cars as rectangles (scale factor from 1 to 2 determining the detailedness)
 def detect_cars(image):
-    return cascade_model.detectMultiScale(image, scaleFactor=1.2, minNeighbors=8, minSize=(25,25))
+    return cascade_model.detectMultiScale(image, scaleFactor=1.05, minNeighbors=8, minSize=(25,25))
 
 # Grays and blurs a BGR frame
 def cvt_frame(frame, kernel_size):
@@ -14,17 +14,17 @@ def cvt_frame(frame, kernel_size):
     # Graying frame
     gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
-    # Blurring frame
+    # Blurring frame (kernel_size is degree of blurredness)
     gray = cv.GaussianBlur(src=gray, ksize= (kernel_size, kernel_size), sigmaX=0)
 
     return gray
 
 # Video Based
-capture = cv.VideoCapture("videos/cars_parkway.mp4")
+capture = cv.VideoCapture("videos/single_car2.mp4")
 
 while True:
     _, frame = capture.read()
-    processed_frame = cvt_frame(frame, 33)
+    processed_frame = cvt_frame(frame, 1)
      
     cars_loc = detect_cars(processed_frame)
 
