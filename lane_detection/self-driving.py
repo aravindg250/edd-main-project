@@ -50,22 +50,23 @@ def displayLinesAVG(img, lines):
 def average_slope_intercept(img, lines):
     left_fit = []
     right_fit = []
-    for line in lines:
-        for x1, y1, x2, y2 in line:
-            fit = np.polyfit((x1, x2), (y1, y2), 1)
-            slope = fit[0]
-            intercept = fit[1]
-            if slope < 0:
-                left_fit.append((slope, intercept))
-            else:
-                right_fit.append((slope, intercept))
-    left_fit_avg = np.average(left_fit, axis=0)
-    right_fit_avg = np.average(right_fit, axis=0)
+    if lines is not None:  
+        for line in lines:
+            for x1, y1, x2, y2 in line:
+                fit = np.polyfit((x1, x2), (y1, y2), 1)
+                slope = fit[0]
+                intercept = fit[1]
+                if slope < 0:
+                    left_fit.append((slope, intercept))
+                else:
+                    right_fit.append((slope, intercept))
+        left_fit_avg = np.average(left_fit, axis=0)
+        right_fit_avg = np.average(right_fit, axis=0)
 
-    left_line = make_points(img, left_fit_avg)
-    right_line = make_points(img, right_fit_avg)
-    average_lines = [left_line, right_line]
-    return average_lines
+        left_line = make_points(img, left_fit_avg)
+        right_line = make_points(img, right_fit_avg)
+        average_lines = [left_line, right_line]
+        return average_lines
 
 def make_points(img, lineSI):
     slope, intercept = lineSI
