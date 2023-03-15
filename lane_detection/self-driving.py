@@ -2,6 +2,7 @@ import cv2 as cv
 import numpy as np
 
 capture = cv.VideoCapture("test1.mp4")
+# capture = cv.VideoCapture(0)
 # Check if camera opened successfully
 
 
