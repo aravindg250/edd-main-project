@@ -27,13 +27,14 @@ while True:
     # Extract lane lines
     left_lane_lines = []
     right_lane_lines = []
-    for line in lines:
-        x1, y1, x2, y2 = line[0]
-        slope, intercept = np.polyfit((x1, x2), (y1, y2), 1)
-        if slope < 0:
-            left_lane_lines.append((slope, intercept))
-        else:
-            right_lane_lines.append((slope, intercept))
+    if lines is not None:
+        for line in lines:
+            x1, y1, x2, y2 = line[0]
+            slope, intercept = np.polyfit((x1, x2), (y1, y2), 1)
+            if slope < 0:
+                left_lane_lines.append((slope, intercept))
+            else:
+                right_lane_lines.append((slope, intercept))
     left_lane_lines_avg = np.average(left_lane_lines, axis=0)
     right_lane_lines_avg = np.average(right_lane_lines, axis=0)
     
