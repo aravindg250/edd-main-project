@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 
 # Capture video feed
+# cap = cv2.VideoCapture("/lane_detection/test1.mp4")
 cap = cv2.VideoCapture(0)
 
 # Loop over frames
@@ -47,6 +48,10 @@ while True:
         x1 = int((y1 - left_intercept) / left_slope)
         x2 = int((y2 - left_intercept) / left_slope)
         cv2.line(line_image, (x1, y1), (x2, y2), (0, 255, 0), 10)
+
+    # Bottom left coordinate of lane
+    x_left = int((y1 - left_intercept) / left_slope)
+
     if len(right_lane_lines) > 0:
         right_slope, right_intercept = right_lane_lines_avg
         y1 = height
@@ -54,7 +59,31 @@ while True:
         x1 = int((y1 - right_intercept) / right_slope)
         x2 = int((y2 - right_intercept) / right_slope)
         cv2.line(line_image, (x1, y1), (x2, y2), (0, 255, 0), 10)
+
+    # Bottom right coordinate of lane
+    x_right = int((y1 - right_intercept) / right_slope)
     
+    # Adding the center line
+    x_center = int((x_right + x_left)/2)
+    cv2.line(line_image, (x_center, height), (x_center, int(height/2)), (255,0,0), 10)
+
+    # Car position and adding line at center of camera
+    car_position = int(width/2)
+    cv2.line(line_image, (car_position, height), (car_position, int(height/2)), (0,0,255), 10)
+
+
+    # Conversion of pixels to meters (determined based on camera and position of camera)
+    xmeters_pixels = 10.0 / 1000
+    ymeters_pixels = 3.7 / 781
+
+    # Calculating offset of car position from center of lane (assuming that the middle of the camera is the car position)
+    
+    offset = (np.abs(car_position) - np.abs(x_center)) * xmeters_pixels * 100
+
+
+
+
+
     # Merge lane lines with original image
     result = cv2.addWeighted(frame, 0.8, line_image, 1, 0)
     
