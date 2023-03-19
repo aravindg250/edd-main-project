@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # Capture video feed
-cap = cv2.VideoCapture("road-1101.mp4")
+cap = cv2.VideoCapture("road-80395.mp4")
 
 # Loop over frames
 while True:
@@ -18,7 +18,7 @@ while True:
 
     mask = np.zeros_like(edges)
     height, width = mask.shape
-    polygon = np.array([[(0, height), (width, height), (width, height//2), (0, height//2)]], dtype=np.int32)
+    polygon = np.array([[(200, height), (800, 350), (1200, height)]], dtype=np.int32)
     cv2.fillPoly(mask, polygon, 255)
     masked_edges = cv2.bitwise_and(edges, mask)
     
