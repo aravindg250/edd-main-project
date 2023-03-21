@@ -2,7 +2,9 @@ import cv2
 import numpy as np
 
 # Capture video feed
-cap = cv2.VideoCapture('test1.mp4')
+cap = cv2.VideoCapture('highway-10364.mp4')
+
+prevoff = 0
 
 # Loop over frames
 while True:
@@ -90,10 +92,17 @@ while True:
 
         # Calculating offset of car position from center of lane (assuming that the middle of the camera is the car position)
         offset = (np.abs(car_position) - np.abs(x_center)) * xmeters_pixels * 100
+
+        #Ensuring the offset is within reasonable range
         if offset<3 and offset>-3:
             rounded_offset = np.round(offset, 1)
             cv2.putText(line_image, "offset: " + str(rounded_offset), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 5)
+            
+            prevoff = offset
 
+        else:
+    
+            cv2.putText(line_image, "offset: " + str(prevoff), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 5)
 
     # Merge lane lines with original image
     result = cv2.addWeighted(frame, 0.8, line_image, 1, 0)
