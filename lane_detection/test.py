@@ -2,7 +2,8 @@ import cv2
 import numpy as np
 
 # Capture video feed
-cap = cv2.VideoCapture('highway-10364.mp4')
+cap = cv2.VideoCapture('test1.mp4')
+live = cv2.VideoCapture(0)
 
 prevoff = 0
 
@@ -13,7 +14,7 @@ while True:
     
     # Preprocess image
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    blur = cv2.GaussianBlur(gray, (5, 5), 0)
+    blur = cv2.GaussianBlur(frame, (5, 5), 0)
     edges = cv2.Canny(blur, 50, 150)
     
     # Select region of interest
@@ -74,7 +75,7 @@ while True:
         x_tright = x2
     
     # Car position and adding line at center of camera
-    car_position = int(width/2)
+    car_position = int(800)
     cv2.line(line_image, (car_position, height), (car_position, int(height/2)), (0,0,255), 10)
 
     # Conversion of pixels to meters (determined based on camera and position of camera)
@@ -111,9 +112,10 @@ while True:
     cv2.imshow('Lane Detection', result)
     
     # Break the loop if 'q' is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(50) & 0xFF == ord('q'):
         break
 
 # Release the capture and destroy all windows
 cap.release()
+
 cv2.destroyAllWindows()
