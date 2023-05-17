@@ -95,14 +95,15 @@ while True:
         offset = (np.abs(car_position) - np.abs(x_center)) * xmeters_pixels * 100
 
         #Ensuring the offset is within reasonable range
-        if offset<3 and offset>-3:
+        if offset<1 and offset>-2:
             rounded_offset = np.round(offset, 1)
             cv2.putText(line_image, "offset: " + str(rounded_offset), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 5)
             
             prevoff = offset
 
         else:
-    
+            #function to put on warning display
+
             cv2.putText(line_image, "offset: " + str(prevoff), (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,255,0), 5)
 
     # Merge lane lines with original image
